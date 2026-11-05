@@ -40,7 +40,10 @@ export default function App() {
         body: JSON.stringify({ image: dataUrl.split(',')[1], mimeType: 'image/jpeg' }),
       });
       const result = await r.json();
-      if (!r.ok) throw new Error((result.error || 'Request failed') + ' ' + (result.detail || ''));
+      if (!r.ok) {
+        console.warn('API detail:', result.detail);
+        throw new Error(result.error || 'Request failed');
+      }
       setDraft({ result, thumb, flags: checkResult(result) });
       setStage(result.is_bill ? 'review' : 'notbill');
     } catch (err) {
@@ -95,7 +98,11 @@ export default function App() {
         )}
 
         {tab === 'scan' && stage === 'loading' && (
-          <div className="card center"><div className="spinner" /><p>Reading your bill…</p></div>
+          <div className="card center">
+            <div className="spinner" />
+            <p>Reading your bill…</p>
+            <small>Usually 5 to 15 seconds</small>
+          </div>
         )}
 
         {tab === 'scan' && stage === 'notbill' && (

@@ -10,7 +10,7 @@ async function draw(bitmap, maxSide, quality) {
 export async function resizeToJpeg(file) {
   // 'from-image' respects the phone's EXIF rotation
   const bitmap = await createImageBitmap(file, { imageOrientation: 'from-image' });
-  const dataUrl = await draw(bitmap, 1280, 0.8); // sent to the model
+  const dataUrl = await draw(bitmap, 1024, 0.7); // sent to the model
   const thumb = await draw(bitmap, 160, 0.6);    // saved in the list
   bitmap.close?.();
   return { dataUrl, thumb };
