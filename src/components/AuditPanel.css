@@ -1,17 +1,94 @@
-.audit { background: #fff; border: 1px solid #E4E7EC; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
-.audit-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
-.audit-head h2 { margin: 0; font-size: 16px; color: #101828; }
-.audit-count { font-size: 12px; color: #667085; background: #F2F4F7; border-radius: 999px; padding: 3px 10px; }
-.audit-count.has { color: #B54708; background: #FFFAEB; border: 1px solid #FEDF89; }
-.audit ul { list-style: none; margin: 0; padding: 0; }
-.audit-item { padding: 10px 0; border-top: 1px solid #EAECF0; }
-.audit-item:first-child { border-top: 0; }
-.audit-item b { display: block; font-size: 14px; color: #101828; }
-.audit-item p { margin: 4px 0 0; font-size: 13px; line-height: 1.45; color: #475467; }
-.audit-item.warn { border-left: 3px solid #F79009; padding-left: 10px; }
-.audit-empty { margin: 0; font-size: 13px; color: #475467; }
-.audit-overlay { position: fixed; inset: 0; background: rgba(16, 24, 40, 0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50; }
-.audit-dialog { background: #fff; border-radius: 14px; padding: 20px; max-width: 360px; width: 100%; }
-.audit-dialog h3 { margin: 0 0 8px; font-size: 17px; color: #101828; }
-.audit-dialog p { margin: 0 0 16px; font-size: 14px; line-height: 1.5; color: #475467; }
-.audit-dialog button { width: 100%; }
+.audit {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.audit-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+.audit-head h2 {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text-main);
+}
+.audit-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  background: var(--bg-subtle);
+  border-radius: 999px;
+  padding: 3px 10px;
+}
+.audit-count.has {
+  color: var(--warn-text);
+  background: var(--warn-bg, transparent);
+  border: 1px solid var(--warn-border);
+}
+.audit ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.audit-item {
+  padding: 10px 0;
+  border-top: 1px solid var(--border-color);
+}
+.audit-item:first-child {
+  border-top: 0;
+}
+.audit-item b {
+  display: block;
+  font-size: 14px;
+  color: var(--text-main);
+}
+.audit-item p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+.audit-item.warn {
+  border-left: 3px solid var(--warn-text);
+  padding-left: 10px;
+}
+.audit-empty {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+.audit-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 50;
+}
+.audit-dialog {
+  background: var(--dialog-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 20px;
+  max-width: 360px;
+  width: 100%;
+}
+.audit-dialog h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: var(--text-main);
+}
+.audit-dialog p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+.audit-dialog button {
+  width: 100%;
+}

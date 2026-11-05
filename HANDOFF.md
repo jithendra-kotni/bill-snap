@@ -4,7 +4,7 @@ Internship task: PWA that photographs a bill, checks it is a bill, extracts merc
 
 Stack: React + Vite PWA, IndexedDB via idb-keyval, Vercel serverless function api/extract.js calling the Gemini API. Secrets live in Vercel env vars and are used by vercel dev. Never print or commit keys. Run with vercel dev, not npm run dev.
 
-File ownership. Do NOT edit without asking: api/extract.js, src/lib/audit.js, src/lib/validate.js, src/lib/image.js, src/components/AuditPanel.jsx, src/components/AuditPanel.css, src/App.jsx (until told it is allowed).
+File ownership. Do NOT edit without asking: api/extract.js, src/lib/audit.js, src/lib/validate.js, src/lib/image.js, src/components/AuditPanel.jsx, src/components/AuditPanel.css.
 Allowed: src/App.css, src/components/BillList.jsx, src/components/ResultForm.jsx.
 Rules: no new libraries, one task at a time, keep existing props and class names working, show a diff before applying.
 
