@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { resizeToJpeg } from './lib/image';
 import { checkResult } from './lib/validate';
+import { auditBill, hasAuditData } from './lib/audit';
 import { loadBills, saveBills } from './lib/storage';
 import ResultForm from './components/ResultForm';
 import BillList from './components/BillList';
+import { AuditPanel, AuditAlert } from './components/AuditPanel';
 import './App.css';
 
 const blank = () => ({
@@ -13,6 +15,8 @@ const blank = () => ({
   total: { value: null, confidence: 0 },
   category: 'Other',
   category_confidence: 0,
+  line_items: [],
+  charges: [],
 });
 const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2);
 
@@ -22,6 +26,7 @@ export default function App() {
   const [stage, setStage] = useState('idle'); // idle | loading | review | notbill | error
   const [draft, setDraft] = useState(null);
   const [message, setMessage] = useState('');
+  const [alertOpen, setAlertOpen] = useState(false);
   const camRef = useRef();
   const galRef = useRef();
 
@@ -44,7 +49,9 @@ export default function App() {
         console.warn('API detail:', result.detail);
         throw new Error(result.error || 'Request failed');
       }
-      setDraft({ result, thumb, flags: checkResult(result) });
+      const findings = result.is_bill ? auditBill(result) : [];
+      setDraft({ result, thumb, flags: checkResult(result), findings });
+      setAlertOpen(findings.some((f) => f.severity === 'warn'));
       setStage(result.is_bill ? 'review' : 'notbill');
     } catch (err) {
       setMessage(err.message);
@@ -54,7 +61,8 @@ export default function App() {
 
   function manualEntry() {
     const result = blank();
-    setDraft({ result, thumb: draft?.thumb || null, flags: checkResult(result) });
+    setDraft({ result, thumb: draft?.thumb || null, flags: checkResult(result), findings: [] });
+    setAlertOpen(false);
     setStage('review');
   }
 
@@ -67,7 +75,8 @@ export default function App() {
     if (values.total !== Number(raw.total?.value)) corrected.push('total');
     if (values.category !== raw.category) corrected.push('category');
 
-    const bill = { id: uid(), ...values, thumb: draft.thumb, raw, corrected, createdAt: Date.now() };
+    const audit = (draft.findings || []).map(({ severity, code, title }) => ({ severity, code, title }));
+    const bill = { id: uid(), ...values, thumb: draft.thumb, raw, corrected, audit, createdAt: Date.now() };
     const next = [bill, ...bills];
     setBills(next);
     await saveBills(next);
@@ -81,7 +90,9 @@ export default function App() {
     await saveBills(next);
   }
 
-  function reset() { setDraft(null); setStage('idle'); setMessage(''); }
+  function reset() { setDraft(null); setStage('idle'); setMessage(''); setAlertOpen(false); }
+
+  const warnCount = draft?.findings?.filter((f) => f.severity === 'warn').length || 0;
 
   return (
     <div className="app">
@@ -126,7 +137,9 @@ export default function App() {
         {tab === 'scan' && stage === 'review' && (
           <>
             {draft.thumb && <img className="preview" src={draft.thumb} alt="Your bill" />}
+            <AuditPanel findings={draft.findings} show={hasAuditData(draft.result)} />
             <ResultForm result={draft.result} flags={draft.flags} onSave={handleSave} onCancel={reset} />
+            {alertOpen && <AuditAlert count={warnCount} onClose={() => setAlertOpen(false)} />}
           </>
         )}
 

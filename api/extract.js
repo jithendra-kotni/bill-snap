@@ -1,21 +1,29 @@
 const CATEGORIES = ['Food', 'Groceries', 'Utilities', 'Transport', 'Shopping', 'Health', 'Education', 'Other'];
 
-const PROMPT = `You analyse photos for a bill-scanning app.
+const PROMPT = `You read photos for a bill-scanning app. You only READ what is printed. Never calculate, correct or guess.
 
 Step 1: decide whether the image is a bill: a receipt, invoice or utility/phone/internet/fee bill (printed or handwritten).
 These are NOT bills: selfies, ID cards, screenshots of chats or apps, menus, price lists, landscapes, random documents.
 
 Step 2: if it is a bill, extract:
 - merchant: the shop/company/institution name
-- date: the bill date as YYYY-MM-DD. Dates on these bills are usually DD/MM/YYYY (Indian format). If the day/month order is truly ambiguous, still pick DD/MM and give a low confidence.
+- date: the bill date as YYYY-MM-DD. Dates are usually DD/MM/YYYY (Indian format). If day/month order is truly ambiguous, still pick DD/MM and give a low confidence.
 - total: the FINAL amount payable as a number (not the subtotal, tax or change given). No currency symbol.
 - currency: e.g. "INR", or null
 - category: one of ${CATEGORIES.join(', ')}
+- gstin: the seller's 15-character GSTIN if printed, else null
+- composition_scheme_mentioned: true only if the bill says composition taxable person / not eligible to collect tax
+- line_items: every purchased item as {description, quantity, unit_price, amount}. Use null for anything not printed. Empty array if there are no items.
+- subtotal: the items total before taxes and fees, if printed, else null
+- charges: every extra line that is not a purchased item (taxes, fees, service charges, tips, packaging, delivery, platform fees). Do not put discounts here. For each: {label (exactly as printed), amount, rate_percent (if printed, else null), type}.
+  Classify type by what the charge really is, NOT by its label. Allowed types: "service_charge" (includes SC, S.Chg, staff contribution, hospitality charge and similar), "tip", "packaging", "delivery", "platform_fee", "convenience_fee", "cgst", "sgst", "igst", "gst" (one combined GST line), "cess", "other".
+- discount: total discount as a positive number, or null
+- round_off: the round-off amount (positive or negative), or null
 
 Rules:
-- Never guess. If a field is unreadable or missing, use null and confidence 0.
+- Copy numbers exactly as printed. If a field is unreadable or missing, use null (confidence 0 for the first six fields).
 - Confidence is a number from 0 to 1 for how sure you are the value is exactly right.
-- If it is not a bill, set is_bill to false and every field value to null.
+- If it is not a bill, set is_bill to false, every field value to null and both arrays empty.
 
 Reply with ONLY this JSON, nothing else:
 {
@@ -27,14 +35,21 @@ Reply with ONLY this JSON, nothing else:
  "total": {"value": null, "confidence": 0.0},
  "currency": null,
  "category": "Other",
- "category_confidence": 0.0
+ "category_confidence": 0.0,
+ "gstin": {"value": null, "confidence": 0.0},
+ "composition_scheme_mentioned": false,
+ "line_items": [{"description": "", "quantity": null, "unit_price": null, "amount": 0}],
+ "subtotal": null,
+ "charges": [{"label": "", "amount": 0, "rate_percent": null, "type": "other"}],
+ "discount": null,
+ "round_off": null
 }`;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function callGemini(model, image, mimeType, lowThinking) {
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`;
-  const generationConfig = { responseMimeType: 'application/json', temperature: 0 };
+  const generationConfig = { responseMimeType: 'application/json', temperature: 0, maxOutputTokens: 8192 };
   if (lowThinking) generationConfig.thinkingConfig = { thinkingLevel: 'low' };
   return fetch(url, {
     method: 'POST',
