@@ -1,0 +1,21 @@
+﻿file,kind,is_bill,merchant,date,total,category,note
+1.webp,faded scan cropped,yes,,,,Food,restaurant bill; header and date not visible; bottom cut off before the grand total; subtotal 2011.00 plus service charge 201.10
+2.webp,clean photo,yes,Flame Kitchen,2025-05-21,290.00,Food,thermal receipt held by hand
+3.jpeg,angled creased,yes,Bakers Fun Tastes,2026-11-05,478.00,Food|Groceries,item prices include tax; subtotal 455.26 plus tax and round off
+4.jpeg,blurry long strip,yes,,,1715.00,Utilities,electricity bill; top cut off; only a due date is visible; total due read as 1715.00 (verify on the paper)
+5.jpg,digital cropped,yes,More,2025-06-29,,Groceries,screenshot cut off before the grand total
+6.jpg,digital cropped,yes,More,2026-11-03,,Groceries,screenshot cut off before the grand total
+7.jpg,digital,yes,More,2026-11-05,40.00,Groceries,short receipt with GST breakdown
+8.jpg,digital invoice,yes,Amazon,2026-10-16,2399.00,Shopping,sold by Retailez Private Limited so merchant is ambiguous; IGST 18 percent
+9.png,digital template,yes,Concordia Hill Hospital,2023-07-01,1902.05,Health,US date format MM/DD/YY; USD; inconsistent (header Amount Due 1745.00 and printed subtotal 745.00)
+10.png,digital template,yes,Zylker,2024-08-05,14595.00,Health,USD; invoice template
+11.jpg,annotated photo,yes,DMart,2025-08-16,993.00,Groceries,pen marks over the bill; date read as 16/08/2025 (verify on the paper)
+12.avif,old scan,yes,Liquor Street,2018-05-20,1139.00,Food,2018 date; S.Tax line circled in red; item totals already include tax
+13.jpeg,handwritten,yes,Hillside Joinery,2026-03-14,406.80,Other,UK invoice; pounds; date DD/MM/YY
+14.webp,handwritten,yes,Samsuddin Siddiqui,2024-10-28,7226.00,Other,handwritten Indian invoice; the customer is BVC Logistics
+15.webp,,yes,,,,,FILL THIS ROW FROM THE PAPER BILL OR DELETE IT
+16.jpeg,non-bill,no,,,,,
+17.jpeg,non-bill,no,,,,,
+18.jpeg,non-bill,no,,,,,
+19.jpeg,non-bill,no,,,,,
+20.jpeg,non-bill,no,,,,,
