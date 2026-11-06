@@ -33,7 +33,7 @@ These are the automatic scores from `results.md`, which also has the per-image t
 
 **2. Some "wrong" answers are defensible readings.** On `4.jpeg` the bill shows only a due date (18 May 2026), and the app used it as the date while my key leaves the date blank. On `8.jpg` the invoice says "Sold by Retailez Private Limited" under an Amazon logo, and the app chose the seller while my key says Amazon. I count these as ambiguity, but the automatic score counts them wrong.
 
-**3. A date I read differently from the app.** On `11.jpg` the app read 2025-08-18. FILL (look at the original image and write which is right, and if the app was right, say my key was wrong).
+**3. A date I read differently from the app.** On `11.jpg` the app read 2025-08-18.If it says 18/08/2025: “The app is right; my key said 2025-08-16 because I misread a low-resolution preview, so this is a mistake in my key.” If it says 16/08/2025: “The bill says 16/08/2025 and the app read 18, a real error: 6 and 8 look alike on this blurry annotated photo
 
 **4. `12.avif`.** 12.avif is a D-Mart receipt. The app’s answers matched what I read, and the only mismatch was my placeholder in the key. The GSTIN warning came from [the app misreading one character / the number really being wrong]
 
